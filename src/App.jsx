@@ -1,68 +1,83 @@
 import React, { useState, useEffect } from "react";
-import FinalApp from "./FinalApp";
+import Homepage from "./Homepage";
 
 export default function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [currentPage, setCurrentPage] = useState("home");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Effect to listen to URL hash changes
   useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash.replace("#", "");
-      if (["home", "student", "faculty", "inquiry"].includes(hash)) {
-        setCurrentPage(hash);
-      } else {
-        setCurrentPage("home");
-      }
-    };
-
-    window.addEventListener("hashchange", handleHashChange);
-    handleHashChange(); // Set initial page
-
-    return () => {
-      window.removeEventListener("hashchange", handleHashChange);
-    };
+    const loggedIn = localStorage.getItem("isLoggedIn") === "true";
+    setIsLoggedIn(loggedIn);
   }, []);
 
-  // Show login/signup portal if not authenticated
-  if (!isAuthenticated) {
-    return <FinalApp onAuth={() => setIsAuthenticated(true)} />;
-  }
+  const handleLogin = () => {
+    localStorage.setItem("isLoggedIn", "true");
+    setIsLoggedIn(true);
+    console.log("Login triggered!");
+  };
 
-  // Main navigation portal
   return (
     <div className="bg-white text-black min-h-screen">
-      {/* Header */}
-      <header className="bg-red-600 text-white py-4 shadow-md">
-        <div className="container mx-auto px-4 flex justify-between items-center">
-          <h1 className="text-xl md:text-2xl font-bold">Qonnect</h1>
-          <nav className="space-x-4 hidden sm:block">
-            <a href="#home" className="hover:underline">Home</a>
-            <a href="#student" className="hover:underline">Students</a>
-            <a href="#faculty" className="hover:underline">Faculty</a>
-            <a href="#inquiry" className="hover:underline">Inquiry</a>
-          </nav>
+      {isLoggedIn ? (
+        <Homepage onLogout={() => {
+          localStorage.removeItem("isLoggedIn");
+          setIsLoggedIn(false);
+        }} />
+      ) : (
+        <LoginForm onLogin={handleLogin} />
+      )}
+    </div>
+  );
+}
+
+function LoginForm({ onLogin }) {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Form submitted");
+    onLogin(); // Simulate login
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-red-50 p-4">
+      <div className="w-full max-w-md bg-white rounded-xl shadow-lg overflow-hidden">
+        <div className="bg-red-600 text-white py-6 px-6 text-center">
+          <h1 className="text-2xl font-bold">Qonnect</h1>
+          <p className="mt-1">Welcome back!</p>
         </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="container mx-auto px-4 py-8">
-        {currentPage === "home" && <HomePage setCurrentPage={setCurrentPage} />}
-        {currentPage === "student" && <StudentPage />}
-        {currentPage === "faculty" && <FacultyPage />}
-        {currentPage === "inquiry" && <InquiryPage />}
-      </main>
-
-      {/* Footer / Mobile Nav */}
-      <footer className="bg-red-600 text-white py-3 text-center text-sm">
-        <p>© 2025 Qonnect. All rights reserved.</p>
-        <nav className="mt-2 space-x-4 sm:hidden">
-          <a href="#home" className="hover:underline">Home</a>
-          <a href="#student" className="hover:underline">Students</a>
-          <a href="#faculty" className="hover:underline">Faculty</a>
-          <a href="#inquiry" className="hover:underline">Inquiry</a>
-        </nav>
-      </footer>
+        <div className="p-6 space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label htmlFor="login-email" className="block text-sm font-medium mb-1">
+                Email address
+              </label>
+              <input
+                id="login-email"
+                type="email"
+                required
+                placeholder="you@example.com"
+                className="w-full px-3 py-2 border border-gray-300 rounded outline-none focus:ring-2 focus:ring-red-500"
+              />
+            </div>
+            <div>
+              <label htmlFor="login-password" className="block text-sm font-medium mb-1">
+                Password
+              </label>
+              <input
+                id="login-password"
+                type="password"
+                required
+                placeholder="••••••••"
+                className="w-full px-3 py-2 border border-gray-300 rounded outline-none focus:ring-2 focus:ring-red-500"
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-full py-2 mt-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded transition"
+            >
+              Log In
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
   );
 }
