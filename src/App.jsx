@@ -5,23 +5,23 @@ export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const loggedIn = localStorage.getItem("isLoggedIn") === "true";
-    setIsLoggedIn(loggedIn);
+    setIsLoggedIn(localStorage.getItem("isLoggedIn") === "true");
   }, []);
 
   const handleLogin = () => {
     localStorage.setItem("isLoggedIn", "true");
     setIsLoggedIn(true);
-    console.log("Login triggered!");
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    setIsLoggedIn(false);
   };
 
   return (
     <div className="bg-white text-black min-h-screen">
       {isLoggedIn ? (
-        <Homepage onLogout={() => {
-          localStorage.removeItem("isLoggedIn");
-          setIsLoggedIn(false);
-        }} />
+        <Homepage onLogout={handleLogout} />
       ) : (
         <LoginForm onLogin={handleLogin} />
       )}
@@ -32,8 +32,7 @@ export default function App() {
 function LoginForm({ onLogin }) {
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form submitted");
-    onLogin(); // Simulate login
+    onLogin();
   };
 
   return (
