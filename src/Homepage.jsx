@@ -565,28 +565,79 @@ function FacultySection() {
     { value: "biotech", label: "Biotechnology" }
   ];
 
+  // Calculate faculty stats
+  const getTotalFaculty = () => {
+    return Object.values(facultyData).reduce((total, dept) => total + dept.length, 0);
+  };
+
+  const getExperiencedFaculty = () => {
+    return Object.values(facultyData).reduce((total, dept) => {
+      return total + dept.filter(f => f.experience >= 15).length;
+    }, 0);
+  };
+
+  const getPhDFaculty = () => {
+    return Object.values(facultyData).reduce((total, dept) => {
+      return total + dept.filter(f => f.name.startsWith("Dr.")).length;
+    }, 0);
+  };
+
   return (
     <div className="max-w-5xl mx-auto">
-      <h2 className="text-2xl md:text-3xl font-semibold mb-6 text-center text-red-700">Faculty Directory</h2>
+      {/* Enhanced Header Section */}
+      <div className="text-center mb-12">
+        <h2 className="text-3xl md:text-4xl font-bold mb-3 text-gray-800">Meet Our Distinguished Faculty</h2>
+        <p className="text-gray-600 text-lg mb-8">Shaping Tomorrow's Leaders Through Excellence in Education</p>
+        
+        {/* Faculty Stats */}
+        <div className="grid grid-cols-3 gap-4 max-w-3xl mx-auto mb-8">
+          <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+            <div className="text-2xl font-bold text-red-600">{getTotalFaculty()}</div>
+            <div className="text-sm text-gray-600">Expert Faculty</div>
+          </div>
+          <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+            <div className="text-2xl font-bold text-red-600">{getExperiencedFaculty()}</div>
+            <div className="text-sm text-gray-600">15+ Years Experience</div>
+          </div>
+          <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+            <div className="text-2xl font-bold text-red-600">{getPhDFaculty()}</div>
+            <div className="text-sm text-gray-600">PhD Holders</div>
+          </div>
+        </div>
 
-      {/* Department Filter */}
-      <div className="flex justify-center mb-6">
-        <select
-          value={selectedDept}
-          onChange={(e) => setSelectedDept(e.target.value)}
-          className="border border-red-300 rounded p-2 text-red-600 font-medium"
-        >
-          {departmentOptions.map((opt) => (
-            <option key={opt.value} value={opt.value}>{opt.label}</option>
-          ))}
-        </select>
+        {/* Department Filter with enhanced styling */}
+        <div className="inline-block relative">
+          <select
+            value={selectedDept}
+            onChange={(e) => setSelectedDept(e.target.value)}
+            className="appearance-none bg-white border border-gray-200 rounded-lg py-2 px-4 pr-8 text-gray-700 font-medium hover:border-red-300 focus:outline-none focus:ring-2 focus:ring-red-200 transition-all cursor-pointer"
+          >
+            {departmentOptions.map((opt) => (
+              <option key={opt.value} value={opt.value}>{opt.label}</option>
+            ))}
+          </select>
+          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+            <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+            </svg>
+          </div>
+        </div>
       </div>
 
-      {/* Faculty Cards */}
+      {/* Faculty Cards with subtle animation */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {facultyData[selectedDept].map((f, i) => (
-          <FacultyCard key={i} {...f} />
+          <div key={i} className="transform hover:-translate-y-1 transition-transform duration-300">
+            <FacultyCard {...f} />
+          </div>
         ))}
+      </div>
+
+      {/* Department Info */}
+      <div className="mt-12 text-center">
+        <p className="text-sm text-gray-500">
+          Looking for specific expertise? Connect with our faculty members directly through email or LinkedIn.
+        </p>
       </div>
     </div>
   );
@@ -594,14 +645,14 @@ function FacultySection() {
 
 function FacultyCard({ name, role, department, office, phone, email, officeHours, research, specialization, experience, linkedin, achievements, courses, badges }) {
   return (
-    <div className="bg-white p-5 rounded-xl shadow hover:shadow-2xl transition-all duration-300 flex flex-col items-center border-t-4 border-emerald-300 relative">
+    <div className="bg-white p-5 rounded-xl shadow hover:shadow-xl transition-all duration-300 flex flex-col items-center border-t-4 border-red-200 relative">
       <div className="absolute top-3 right-3 flex gap-1">
         {badges && badges.map((b, i) => (
-          <span key={i} className="bg-gradient-to-r from-teal-400 to-emerald-400 text-white text-xs px-2 py-0.5 rounded-full font-semibold shadow-sm">{b}</span>
+          <span key={i} className="bg-gradient-to-r from-pink-400 to-red-400 text-white text-xs px-2 py-0.5 rounded-full font-semibold shadow-sm">{b}</span>
         ))}
       </div>
       <PlaceholderAvatar name={name} size={64} className="mb-2 border-4 border-white shadow" />
-      <h3 className="font-bold text-lg mb-1 text-emerald-700">{name}</h3>
+      <h3 className="font-bold text-lg mb-1 text-red-700">{name}</h3>
       <p className="text-sm text-gray-600 mb-1">{role} — {department}</p>
       <div className="text-xs text-gray-500 mb-1">{office}</div>
       <div className="text-xs text-gray-500 mb-1">Office Hours: {officeHours}</div>
@@ -610,16 +661,16 @@ function FacultyCard({ name, role, department, office, phone, email, officeHours
       <div className="text-xs text-gray-500 mb-1">Research: {research}</div>
       <div className="flex flex-wrap gap-1 my-2">
         {courses && courses.map((c, i) => (
-          <span key={i} className="bg-emerald-100 text-emerald-700 text-xs px-2 py-0.5 rounded-full font-medium border border-emerald-200">{c}</span>
+          <span key={i} className="bg-red-50 text-red-700 text-xs px-2 py-0.5 rounded-full font-medium border border-red-100">{c}</span>
         ))}
       </div>
       <div className="flex flex-wrap gap-1 mb-2">
         {achievements && achievements.map((a, i) => (
-          <span key={i} className="bg-blue-100 text-blue-700 text-xs px-2 py-0.5 rounded-full font-medium border border-blue-200">🏅 {a}</span>
+          <span key={i} className="bg-gray-50 text-gray-700 text-xs px-2 py-0.5 rounded-full font-medium border border-gray-100">🏅 {a}</span>
         ))}
       </div>
       <div className="text-xs text-gray-500 mb-1">📞 {phone}</div>
-      <div className="text-xs text-gray-500 mb-1">✉️ <a href={`mailto:${email}`} className="text-emerald-600 hover:underline">{email}</a></div>
+      <div className="text-xs text-gray-500 mb-1">✉️ <a href={`mailto:${email}`} className="text-red-600 hover:underline">{email}</a></div>
       <a href={linkedin} target="_blank" rel="noopener noreferrer" className="mt-2 inline-block text-xs text-blue-600 hover:underline">LinkedIn</a>
     </div>
   );

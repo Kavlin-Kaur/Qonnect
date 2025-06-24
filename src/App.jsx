@@ -56,7 +56,7 @@ function LoginForm({ onLogin }) {
                 className="w-full px-3 py-2 border border-gray-300 rounded outline-none focus:ring-2 focus:ring-red-500"
               />
             </div>
-            <div>
+      <div>
               <label htmlFor="login-password" className="block text-sm font-medium mb-1">
                 Password
               </label>
@@ -108,7 +108,7 @@ function PageCard({ title, link, onClick }) {
     >
       <h3 className="text-xl font-medium text-red-700">{title}</h3>
       <p className="mt-2 text-sm text-gray-600">View and manage {title.toLowerCase()} section</p>
-    </a>
+        </a>
   );
 }
 
