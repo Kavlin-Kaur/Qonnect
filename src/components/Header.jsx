@@ -45,51 +45,57 @@ const Header = () => {
 
   // Return the JSX (HTML-like code) that will be displayed
   return (
-    // Header container - white background, shadow, border
-    <header className="bg-white shadow-sm border-b border-gray-200">
+    // Header container - blue gradient background, shadow, border
+    <header className="bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 shadow-lg border-b border-white/20 backdrop-blur-sm">
       {/* Main header content container - responsive max width */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header row - flexbox layout */}
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-20">
           
           {/* Logo section - left side */}
           <div className="flex items-center">
             {/* Link to homepage with logo */}
-            <Link to="/" className="flex items-center">
+            <Link to="/" className="flex items-center group">
+              {/* Logo icon */}
+              <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mr-3 group-hover:bg-white/30 transition-all duration-300">
+                <span className="text-2xl font-bold text-white">Q</span>
+              </div>
               {/* Logo text */}
-              <h1 className="text-2xl font-bold text-gray-900">Qonnect</h1>
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent group-hover:from-blue-200 group-hover:to-white transition-all duration-300">
+                Qonnect
+              </h1>
             </Link>
           </div>
 
           {/* Navigation menu - hidden on mobile, visible on desktop */}
-          <nav className="hidden md:flex space-x-8">
+          <nav className="hidden md:flex space-x-1">
             {/* Home link */}
             <Link
               to="/"
-              className="text-gray-700 hover:text-red-600 px-3 py-2 text-sm font-medium transition-colors"
+              className="text-white/90 hover:text-white hover:bg-white/20 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-105"
             >
-              Home
+              🏠 Home
             </Link>
             {/* Students section link */}
             <Link
-              to="/#students"
-              className="text-gray-700 hover:text-red-600 px-3 py-2 text-sm font-medium transition-colors"
+              to="/students"
+              className="text-white/90 hover:text-white hover:bg-white/20 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-105"
             >
-              Students
+              🎓 Students
             </Link>
             {/* Faculty section link */}
             <Link
-              to="/#faculty"
-              className="text-gray-700 hover:text-red-600 px-3 py-2 text-sm font-medium transition-colors"
+              to="/faculty"
+              className="text-white/90 hover:text-white hover:bg-white/20 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-105"
             >
-              Faculty
+              👨‍🏫 Faculty
             </Link>
             {/* Inquiry section link */}
             <Link
-              to="/#inquiry"
-              className="text-gray-700 hover:text-red-600 px-3 py-2 text-sm font-medium transition-colors"
+              to="/inquiry"
+              className="text-white/90 hover:text-white hover:bg-white/20 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-105"
             >
-              Inquiry
+              💬 Inquiry
             </Link>
           </nav>
 
@@ -103,54 +109,76 @@ const Header = () => {
                 {/* Profile button - opens dropdown when clicked */}
                 <button
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className="flex items-center space-x-2 text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-red-500"
+                  className="flex items-center space-x-3 text-sm rounded-xl bg-white/20 hover:bg-white/30 px-4 py-2 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white/50"
                 >
                   {/* User avatar - circle with initials */}
-                  <div className="w-8 h-8 bg-gradient-to-r from-red-500 to-red-600 rounded-full flex items-center justify-center text-white font-medium text-sm">
+                  <div className="w-8 h-8 bg-gradient-to-r from-white/30 to-white/20 rounded-full flex items-center justify-center text-white font-bold text-sm border border-white/30">
                     {getInitials(user.name || user.email)} {/* Show user initials */}
                   </div>
                   {/* User name - hidden on mobile */}
-                  <span className="hidden md:block text-gray-700">{user.name || user.email}</span>
+                  <span className="hidden md:block text-white font-medium">{user.name || user.email}</span>
+                  {/* Dropdown arrow */}
+                  <svg className="w-4 h-4 text-white/70 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
                 </button>
 
                 {/* Dropdown menu - only show if menu is open */}
                 {isMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200">
+                  <div className="absolute right-0 mt-3 w-64 bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl py-2 z-50 border border-white/20 animate-in slide-in-from-top-2 duration-200">
                     {/* User info section */}
-                    <div className="px-4 py-2 text-sm text-gray-700 border-b border-gray-100">
+                    <div className="px-4 py-3 border-b border-gray-200/50">
                       {/* User name */}
-                      <p className="font-medium">{user.name || 'User'}</p>
+                      <p className="font-semibold text-gray-800">{user.name || 'User'}</p>
                       {/* User email */}
-                      <p className="text-gray-500">{user.email}</p>
+                      <p className="text-gray-600 text-sm">{user.email}</p>
                       {/* User type - only show if it exists */}
                       {user.userType && (
-                        <p className="text-xs text-gray-400 capitalize">{user.userType}</p>
+                        <p className="text-xs text-gray-500 capitalize mt-1">👤 {user.userType}</p>
                       )}
                     </div>
+                    {/* Profile link for students */}
+                    {user.userType === 'student' && (
+                      <Link
+                        to="/student-profile"
+                        className="block w-full text-left px-4 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 transition-all duration-300"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        👤 My Profile
+                      </Link>
+                    )}
+                    {/* Settings link */}
+                    <Link
+                      to="/settings"
+                      className="block w-full text-left px-4 py-3 text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 transition-all duration-300"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      ⚙️ Settings
+                    </Link>
                     {/* Logout button */}
                     <button
                       onClick={handleLogout}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      className="block w-full text-left px-4 py-3 text-red-600 hover:bg-gradient-to-r hover:from-red-50 hover:to-pink-50 transition-all duration-300"
                     >
-                      Sign out
+                      🚪 Sign out
                     </button>
                   </div>
                 )}
               </div>
             ) : (
               // User is not logged in - show login/signup buttons
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-3">
                 {/* Sign in link */}
                 <Link
                   to="/login"
-                  className="text-gray-700 hover:text-red-600 px-3 py-2 text-sm font-medium transition-colors"
+                  className="text-white/90 hover:text-white hover:bg-white/20 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-105"
                 >
                   Sign in
                 </Link>
                 {/* Sign up button */}
                 <Link
                   to="/signup"
-                  className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                  className="bg-white/20 hover:bg-white/30 text-white px-6 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-105 border border-white/30"
                 >
                   Sign up
                 </Link>
@@ -160,7 +188,7 @@ const Header = () => {
             {/* Mobile menu button - only visible on mobile */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden p-2 rounded-md text-gray-700 hover:text-red-600 hover:bg-gray-100"
+              className="md:hidden p-2 rounded-xl text-white hover:bg-white/20 transition-all duration-300"
             >
               {/* Hamburger menu icon */}
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -172,40 +200,40 @@ const Header = () => {
 
         {/* Mobile navigation menu - only show on mobile when menu is open */}
         {isMenuOpen && (
-          <div className="md:hidden border-t border-gray-200 py-4">
+          <div className="md:hidden border-t border-white/20 py-4 animate-in slide-in-from-top-2 duration-200">
             {/* Mobile menu items container */}
-            <div className="space-y-1">
+            <div className="space-y-2">
               {/* Home link for mobile */}
               <Link
                 to="/"
-                className="block px-3 py-2 text-gray-700 hover:text-red-600 text-base font-medium"
+                className="block px-4 py-3 text-white hover:bg-white/20 rounded-xl text-base font-medium transition-all duration-300"
                 onClick={() => setIsMenuOpen(false)} // Close menu when clicked
               >
-                Home
+                🏠 Home
               </Link>
               {/* Students link for mobile */}
               <Link
-                to="/#students"
-                className="block px-3 py-2 text-gray-700 hover:text-red-600 text-base font-medium"
+                to="/students"
+                className="block px-4 py-3 text-white hover:bg-white/20 rounded-xl text-base font-medium transition-all duration-300"
                 onClick={() => setIsMenuOpen(false)} // Close menu when clicked
               >
-                Students
+                🎓 Students
               </Link>
               {/* Faculty link for mobile */}
               <Link
-                to="/#faculty"
-                className="block px-3 py-2 text-gray-700 hover:text-red-600 text-base font-medium"
+                to="/faculty"
+                className="block px-4 py-3 text-white hover:bg-white/20 rounded-xl text-base font-medium transition-all duration-300"
                 onClick={() => setIsMenuOpen(false)} // Close menu when clicked
               >
-                Faculty
+                👨‍🏫 Faculty
               </Link>
               {/* Inquiry link for mobile */}
               <Link
-                to="/#inquiry"
-                className="block px-3 py-2 text-gray-700 hover:text-red-600 text-base font-medium"
+                to="/inquiry"
+                className="block px-4 py-3 text-white hover:bg-white/20 rounded-xl text-base font-medium transition-all duration-300"
                 onClick={() => setIsMenuOpen(false)} // Close menu when clicked
               >
-                Inquiry
+                💬 Inquiry
               </Link>
             </div>
           </div>

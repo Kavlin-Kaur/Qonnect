@@ -7,6 +7,10 @@ import Header from './components/Header';
 import Homepage from './pages/Homepage';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import Students from './pages/Students';
+import Faculty from './pages/Faculty';
+import Inquiry from './pages/Inquiry';
+import StudentProfile from './pages/StudentProfile';
 // Import authentication utility function
 import { isAuthenticated } from './utils/auth';
 // Import CSS styles
@@ -70,6 +74,46 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Homepage />
+                </ProtectedRoute>
+              } 
+            />
+            
+            {/* Students page route */}
+            <Route 
+              path="/students" 
+              element={
+                <ProtectedRoute>
+                  <Students />
+                </ProtectedRoute>
+              } 
+            />
+            
+            {/* Faculty page route */}
+            <Route 
+              path="/faculty" 
+              element={
+                <ProtectedRoute>
+                  <Faculty />
+                </ProtectedRoute>
+              } 
+            />
+            
+            {/* Inquiry page route */}
+            <Route 
+              path="/inquiry" 
+              element={
+                <ProtectedRoute>
+                  <Inquiry />
+                </ProtectedRoute>
+              } 
+            />
+            
+            {/* Student Profile page route */}
+            <Route 
+              path="/student-profile" 
+              element={
+                <ProtectedRoute>
+                  <StudentProfile />
                 </ProtectedRoute>
               } 
             />
