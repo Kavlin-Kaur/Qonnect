@@ -5,6 +5,8 @@ import React, { useState } from 'react';
 function Inquiry() {
   const [activeCategory, setActiveCategory] = useState('general');
   const [openFaq, setOpenFaq] = useState(null);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
 
   // Comprehensive FAQ data organized by categories
   const faqData = {
@@ -90,58 +92,116 @@ function Inquiry() {
     ]
   };
 
+  const showToastMessage = (message) => {
+    setToastMessage(message);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 3000);
+  };
+
   const toggleFaq = (index) => {
     setOpenFaq(openFaq === index ? null : index);
   };
 
+  const handleQuickAction = (action) => {
+    switch(action) {
+      case 'startChat':
+        showToastMessage('Starting AI chat...');
+        break;
+      case 'contactSupport':
+        showToastMessage('Opening contact form...');
+        break;
+      case 'studentGuide':
+        showToastMessage('Loading student guide...');
+        break;
+      case 'facultyGuide':
+        showToastMessage('Loading faculty guide...');
+        break;
+      case 'eventsCalendar':
+        showToastMessage('Opening events calendar...');
+        break;
+      case 'termsOfService':
+        showToastMessage('Loading terms of service...');
+        break;
+      case 'emailSupport':
+        showToastMessage('Opening email client...');
+        break;
+      case 'liveChat':
+        showToastMessage('Connecting to live chat...');
+        break;
+      case 'callUs':
+        showToastMessage('Dialing support number...');
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 p-6">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 p-4 sm:p-6 lg:p-8">
+      <div className="max-w-7xl mx-auto">
         
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-white mb-4">Inquiry & Support Center</h1>
-          <p className="text-xl text-white/80">Get help, find answers, and connect with our community</p>
+        <div className="text-center mb-8 sm:mb-10 lg:mb-12">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-2 sm:mb-4">Inquiry & Support Center</h1>
+          <p className="text-lg sm:text-xl text-white/80">Get help, find answers, and connect with our community</p>
         </div>
 
         {/* Main Content Grid */}
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid lg:grid-cols-3 gap-6 sm:gap-8">
           
           {/* Quick Actions */}
-          <div className="lg:col-span-1 space-y-6">
+          <div className="lg:col-span-1 space-y-4 sm:space-y-6">
             
             {/* Chat with Bot */}
-            <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-6">
-              <h3 className="text-xl font-bold text-white mb-4">🤖 AI Assistant</h3>
-              <p className="text-white/80 mb-4">Get instant answers to your questions with our AI chatbot.</p>
-              <button className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-3 rounded-xl font-semibold hover:scale-105 transition-transform">
+            <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-4 sm:p-6">
+              <h3 className="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4">🤖 AI Assistant</h3>
+              <p className="text-white/80 mb-3 sm:mb-4 text-sm sm:text-base">Get instant answers to your questions with our AI chatbot.</p>
+              <button 
+                onClick={() => handleQuickAction('startChat')}
+                className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-2 sm:py-3 rounded-xl font-semibold hover:scale-105 transition-transform text-sm sm:text-base"
+              >
                 Start Chat
               </button>
             </div>
 
             {/* Contact Support */}
-            <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-6">
-              <h3 className="text-xl font-bold text-white mb-4">📞 Contact Support</h3>
-              <p className="text-white/80 mb-4">Need personalized help? Reach out to our support team.</p>
-              <button className="w-full bg-gradient-to-r from-blue-400 to-blue-500 text-white py-3 rounded-xl font-semibold hover:scale-105 transition-transform">
+            <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-4 sm:p-6">
+              <h3 className="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4">📞 Contact Support</h3>
+              <p className="text-white/80 mb-3 sm:mb-4 text-sm sm:text-base">Need personalized help? Reach out to our support team.</p>
+              <button 
+                onClick={() => handleQuickAction('contactSupport')}
+                className="w-full bg-gradient-to-r from-blue-400 to-blue-500 text-white py-2 sm:py-3 rounded-xl font-semibold hover:scale-105 transition-transform text-sm sm:text-base"
+              >
                 Contact Us
               </button>
             </div>
 
             {/* Quick Links */}
-            <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-6">
-              <h3 className="text-xl font-bold text-white mb-4">🔗 Quick Links</h3>
-              <div className="space-y-3">
-                <button className="w-full text-left text-white/80 hover:text-white transition-colors">
+            <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-4 sm:p-6">
+              <h3 className="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4">🔗 Quick Links</h3>
+              <div className="space-y-2 sm:space-y-3">
+                <button 
+                  onClick={() => handleQuickAction('studentGuide')}
+                  className="w-full text-left text-white/80 hover:text-white transition-colors text-sm sm:text-base"
+                >
                   📚 Student Guide
                 </button>
-                <button className="w-full text-left text-white/80 hover:text-white transition-colors">
+                <button 
+                  onClick={() => handleQuickAction('facultyGuide')}
+                  className="w-full text-left text-white/80 hover:text-white transition-colors text-sm sm:text-base"
+                >
                   👨‍🏫 Faculty Guide
                 </button>
-                <button className="w-full text-left text-white/80 hover:text-white transition-colors">
+                <button 
+                  onClick={() => handleQuickAction('eventsCalendar')}
+                  className="w-full text-left text-white/80 hover:text-white transition-colors text-sm sm:text-base"
+                >
                   🎯 Events Calendar
                 </button>
-                <button className="w-full text-left text-white/80 hover:text-white transition-colors">
+                <button 
+                  onClick={() => handleQuickAction('termsOfService')}
+                  className="w-full text-left text-white/80 hover:text-white transition-colors text-sm sm:text-base"
+                >
                   📋 Terms of Service
                 </button>
               </div>
@@ -150,16 +210,16 @@ function Inquiry() {
 
           {/* FAQ Section */}
           <div className="lg:col-span-2">
-            <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-8">
-              <h2 className="text-3xl font-bold text-white mb-6">Frequently Asked Questions</h2>
+            <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-4 sm:p-6 lg:p-8">
+              <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4 sm:mb-6">Frequently Asked Questions</h2>
               
               {/* FAQ Categories */}
-              <div className="flex flex-wrap gap-2 mb-8">
+              <div className="flex flex-wrap gap-2 mb-6 sm:mb-8">
                 {Object.keys(faqData).map((category) => (
                   <button
                     key={category}
                     onClick={() => setActiveCategory(category)}
-                    className={`px-4 py-2 rounded-lg font-semibold transition-all ${
+                    className={`px-3 sm:px-4 py-2 rounded-lg font-semibold transition-all text-sm sm:text-base ${
                       activeCategory === category
                         ? 'bg-white text-gray-800'
                         : 'bg-white/20 text-white hover:bg-white/30'
@@ -171,21 +231,21 @@ function Inquiry() {
               </div>
 
               {/* FAQ Items */}
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {faqData[activeCategory].map((faq, index) => (
                   <div key={index} className="bg-white/10 rounded-xl overflow-hidden">
                     <button
                       onClick={() => toggleFaq(index)}
-                      className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-white/20 transition-colors"
+                      className="w-full px-4 sm:px-6 py-3 sm:py-4 text-left flex justify-between items-center hover:bg-white/20 transition-colors"
                     >
-                      <span className="font-semibold text-white">{faq.q}</span>
-                      <span className="text-white text-xl">
+                      <span className="font-semibold text-white text-sm sm:text-base">{faq.q}</span>
+                      <span className="text-white text-lg sm:text-xl">
                         {openFaq === index ? '−' : '+'}
                       </span>
                     </button>
                     {openFaq === index && (
-                      <div className="px-6 pb-4">
-                        <p className="text-white/80 leading-relaxed">{faq.a}</p>
+                      <div className="px-4 sm:px-6 pb-3 sm:pb-4">
+                        <p className="text-white/80 leading-relaxed text-sm sm:text-base">{faq.a}</p>
                       </div>
                     )}
                   </div>
@@ -196,24 +256,40 @@ function Inquiry() {
         </div>
 
         {/* Additional Help Section */}
-        <div className="mt-12 bg-white/20 backdrop-blur-sm rounded-2xl p-8 text-center">
-          <h3 className="text-2xl font-bold text-white mb-4">Still Need Help?</h3>
-          <p className="text-white/80 mb-6">
+        <div className="mt-8 sm:mt-10 lg:mt-12 bg-white/20 backdrop-blur-sm rounded-2xl p-4 sm:p-6 lg:p-8 text-center">
+          <h3 className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4">Still Need Help?</h3>
+          <p className="text-white/80 mb-4 sm:mb-6 text-sm sm:text-base">
             Can't find what you're looking for? Our support team is here to help you 24/7.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-8 py-3 rounded-xl font-semibold hover:scale-105 transition-transform">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+            <button 
+              onClick={() => handleQuickAction('emailSupport')}
+              className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-xl font-semibold hover:scale-105 transition-transform text-sm sm:text-base"
+            >
               📧 Email Support
             </button>
-            <button className="bg-gradient-to-r from-blue-400 to-blue-500 text-white px-8 py-3 rounded-xl font-semibold hover:scale-105 transition-transform">
+            <button 
+              onClick={() => handleQuickAction('liveChat')}
+              className="bg-gradient-to-r from-blue-400 to-blue-500 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-xl font-semibold hover:scale-105 transition-transform text-sm sm:text-base"
+            >
               💬 Live Chat
             </button>
-            <button className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-3 rounded-xl font-semibold hover:scale-105 transition-transform">
+            <button 
+              onClick={() => handleQuickAction('callUs')}
+              className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-xl font-semibold hover:scale-105 transition-transform text-sm sm:text-base"
+            >
               📞 Call Us
             </button>
           </div>
         </div>
       </div>
+
+      {/* Toast Notification */}
+      {showToast && (
+        <div className="fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 animate-bounce">
+          {toastMessage}
+        </div>
+      )}
     </div>
   );
 }
