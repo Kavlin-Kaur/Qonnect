@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 // Import useNavigate for navigation and Link for creating links
 import { useNavigate, Link } from 'react-router-dom';
+// Import authentication utilities
+import { register } from '../utils/auth';
 
 // Create the Signup component function
 const Signup = () => {
@@ -42,27 +44,27 @@ const Signup = () => {
     // Set loading to true to show "Creating account..." message
     setLoading(true);
     
-    // Simulate a delay (like a real API call would have)
-    // This makes the app feel more realistic
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Create an object with user data to store
-    const userData = {
-      name: name.trim(), // Remove extra spaces from name
-      email: email, // User's email
-      userType: userType, // User type (student/faculty/inquiry)
-      isLoggedIn: true // Mark user as logged in
-    };
-    
-    // Save user data to browser's localStorage
-    // This keeps user logged in even if they refresh the page
-    localStorage.setItem('user', JSON.stringify(userData));
-    
-    // Set loading back to false
-    setLoading(false);
-    
-    // Navigate to the homepage (redirect user)
-    navigate('/');
+    try {
+      // Call the backend API to register user
+      const userData = {
+        name: name.trim(), // Remove extra spaces from name
+        email: email, // User's email
+        password: password, // User's password
+        role: userType // User type (student/faculty)
+      };
+      
+      const { user, token } = await register(userData);
+      
+      // Set loading back to false
+      setLoading(false);
+      
+      // Navigate to the homepage (redirect user)
+      navigate('/');
+    } catch (error) {
+      // Handle registration errors
+      setLoading(false);
+      setError(error.message || 'Registration failed. Please try again.');
+    }
   };
 
   // Return the JSX (HTML-like code) that will be displayed

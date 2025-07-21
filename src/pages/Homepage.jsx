@@ -1,11 +1,19 @@
 // Import React
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { getCurrentUserProfile } from '../utils/auth';
 
 // Simplified homepage with clean design and events - Blue & White theme
 function Homepage() {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    getCurrentUserProfile()
+      .then(setUser)
+      .catch(() => setUser(null));
+  }, []);
 
   // Sample events data
   const upcomingEvents = [
@@ -69,6 +77,15 @@ function Homepage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700">
       
+      {/* Show user info if logged in */}
+      {user && (
+        <div className="max-w-2xl mx-auto bg-white/80 rounded-xl p-6 mt-8 mb-4 text-center shadow-lg">
+          <h2 className="text-2xl font-bold mb-2 text-blue-700">Welcome, {user.name}!</h2>
+          <p className="text-blue-600">Email: {user.email}</p>
+          <p className="text-blue-600">Role: {user.role}</p>
+        </div>
+      )}
+
       {/* Main Hero Section */}
       <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">

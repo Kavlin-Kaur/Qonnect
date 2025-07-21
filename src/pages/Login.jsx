@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 // Import useNavigate for navigation and Link for creating links
 import { useNavigate, Link } from 'react-router-dom';
+// Import authentication utilities
+import { login, testBackendConnection } from '../utils/auth';
 
 // Create the Login component function
 const Login = () => {
@@ -14,6 +16,16 @@ const Login = () => {
   
   // Get the navigate function from React Router
   const navigate = useNavigate();
+
+  // Test backend connection
+  const testConnection = async () => {
+    try {
+      await testBackendConnection();
+      setError('Backend connection successful! Check console for details.');
+    } catch (error) {
+      setError(`Backend connection failed: ${error.message}`);
+    }
+  };
 
   // Function to handle form submission when user clicks "Sign In"
   const handleSubmit = async (e) => {
@@ -33,26 +45,20 @@ const Login = () => {
     // Set loading to true to show "Signing in..." message
     setLoading(true);
     
-    // Simulate a delay (like a real API call would have)
-    // This makes the app feel more realistic
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Create an object with user data to store
-    const userData = {
-      email: email, // User's email
-      name: email.split('@')[0], // Extract name from email (part before @)
-      isLoggedIn: true // Mark user as logged in
-    };
-    
-    // Save user data to browser's localStorage
-    // This keeps user logged in even if they refresh the page
-    localStorage.setItem('user', JSON.stringify(userData));
-    
-    // Set loading back to false
-    setLoading(false);
-    
-    // Navigate to the homepage (redirect user)
-    navigate('/');
+    try {
+      // Call the backend API to authenticate user
+      const { user, token } = await login(email, password);
+      
+      // Set loading back to false
+      setLoading(false);
+      
+      // Navigate to the homepage (redirect user)
+      navigate('/');
+    } catch (error) {
+      // Handle login errors
+      setLoading(false);
+      setError(error.message || 'Login failed. Please try again.');
+    }
   };
 
   // Return the JSX (HTML-like code) that will be displayed
@@ -114,6 +120,17 @@ const Login = () => {
             {loading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
+
+        {/* Test connection button */}
+        <div className="text-center mt-4 w-full">
+          <button
+            type="button"
+            onClick={testConnection}
+            className="text-sm text-blue-600 hover:text-blue-800 underline"
+          >
+            Test Backend Connection
+          </button>
+        </div>
 
         {/* Link to signup page */}
         <div className="text-center mt-6 sm:mt-8 w-full">
